@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Premium global font override */
+body, button, input, select, textarea, .MuiTypography-root {
+  font-family: 'Gilda Display', serif !important;
+}
