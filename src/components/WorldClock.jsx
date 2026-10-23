@@ -3,10 +3,10 @@ import { Box, Typography } from "@mui/material";
 
 const clockConfig = [
   {
-    key: "uae",
-    label: "UAE",
-    timeZone: "Asia/Dubai",
-    flag: "/images/uae.png",
+    key: "saudi",
+    label: "SAUDI",
+    timeZone: "Asia/Riyadh",
+    flag: "/images/ksa.png",
   },
 
   {

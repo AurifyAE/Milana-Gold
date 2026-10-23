@@ -1,4 +1,4 @@
-name: Deploy Zelora Screen
+name: Deploy Milana Screen
 
 on:
   push:
@@ -29,17 +29,18 @@ jobs:
           VITE_APP_API_KEY: ${{ secrets.VITE_APP_API_KEY }}
           VITE_APP_ADMIN_ID: ${{ secrets.VITE_APP_ADMIN_ID }}
           VITE_APP_SOCKET_SECRET_KEY: ${{ secrets.VITE_APP_SOCKET_SECRET_KEY }}
+          VITE_TWELVEDATA_API_KEY: ${{ secrets.VITE_TWELVEDATA_API_KEY }}
 
-      # 4. Prepare Amber-Zahrat folder
-      - name: Prepare Amber-Zahrat folder
+      # 4. Prepare Milana folder
+      - name: Prepare Milana folder
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            sudo mkdir -p /var/www/html/TV_Screens/Zelora
-            sudo chown -R ubuntu:ubuntu /var/www/html/TV_Screens/Zelora
+            sudo mkdir -p /var/www/html/TV_Screens/Milana
+            sudo chown -R ubuntu:ubuntu /var/www/html/TV_Screens/Milana
 
       # 5. Upload new build
       - name: Upload build files
@@ -49,7 +50,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "dist/*"
-          target: "/var/www/html/TV_Screens/Zelora"
+          target: "/var/www/html/TV_Screens/Milana"
           strip_components: 1
 
       # 6. Fix permissions
@@ -60,8 +61,8 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            sudo find /var/www/html/TV_Screens/Zelora -type d -exec chmod 755 {} \;
-            sudo find /var/www/html/TV_Screens/Zelora -type f -exec chmod 644 {} \;
+            sudo find /var/www/html/TV_Screens/Milana -type d -exec chmod 755 {} \;
+            sudo find /var/www/html/TV_Screens/Milana -type f -exec chmod 644 {} \;
 
       # 7. Reload Nginx
       - name: Reload Nginx

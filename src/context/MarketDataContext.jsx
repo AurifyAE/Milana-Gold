@@ -4,14 +4,14 @@ import { getMarketData } from "../services/marketDataService";
 const MarketDataContext = createContext();
 
 const CURRENCY_CONFIG = [
-  { id: "usd", defaultPrice: 3.6725, defaultChange: 0.0023, defaultIsUp: true },
+  { id: "usd", defaultPrice: 3.75, defaultChange: 0.0023, defaultIsUp: true },
   {
     id: "eur",
-    defaultPrice: 4.2541,
+    defaultPrice: 4.34,
     defaultChange: -0.0018,
     defaultIsUp: false,
   },
-  { id: "gbp", defaultPrice: 4.9573, defaultChange: 0.0035, defaultIsUp: true },
+  { id: "gbp", defaultPrice: 5.05, defaultChange: 0.0035, defaultIsUp: true },
 ];
 
 const COMMODITY_CONFIG = [

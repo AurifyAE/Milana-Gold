@@ -8,7 +8,7 @@ import "swiper/css";
 import "swiper/css/autoplay";
 
 const OUNCE = 31.103;
-const AED = 3.674;
+const SAR = 3.75;
 
 const UNIT_MULTIPLIER = {
   GM: 1,
@@ -85,11 +85,11 @@ const CommodityTable = ({ title, items }) => {
         const sellCharge = Number(item.sellCharge) || 0;
 
         const bid = liveRatesLoaded
-          ? ((spotBid + buyPremium) / OUNCE) * AED * weightInGrams * pur + buyCharge
+          ? ((spotBid + buyPremium) / OUNCE) * SAR * weightInGrams * pur + buyCharge
           : null;
 
         const ask = liveRatesLoaded
-          ? ((spotAsk + sellPremium) / OUNCE) * AED * weightInGrams * pur + sellCharge
+          ? ((spotAsk + sellPremium) / OUNCE) * SAR * weightInGrams * pur + sellCharge
           : null;
 
         return {

@@ -18,9 +18,9 @@ export const getMarketData = async (retries = 1) => {
 
   // Combine all symbols in a single request to stay within free plan limits
   const symbols = [
-    "USD/AED",
-    "EUR/AED",
-    "GBP/AED", // Currencies
+    "USD/SAR",
+    "EUR/SAR",
+    "GBP/SAR", // Currencies
     "WTI/USD",
     "XPD/USD",
     "XPT/USD",
@@ -55,9 +55,9 @@ export const getMarketData = async (retries = 1) => {
       const results = {};
 
       // Parse Currencies
-      const usdPair = data["USD/AED"];
-      const eurPair = data["EUR/AED"];
-      const gbpPair = data["GBP/AED"];
+      const usdPair = data["USD/SAR"];
+      const eurPair = data["EUR/SAR"];
+      const gbpPair = data["GBP/SAR"];
 
       if (usdPair?.close && eurPair?.close && gbpPair?.close) {
         results.usd = {
