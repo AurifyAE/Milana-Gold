@@ -11,7 +11,7 @@ import {
 } from "../api/api";
 import io from "socket.io-client";
 import { useSpotRate } from "../context/SpotRateContext";
-import mainLogo from "/images/logo.svg";
+import mainLogo from "/images/logo.png";
 import SystemClock from "../components/SystemClock";
 import WorldClockHorizontal from "../components/WorldClock";
 import CommodityTable from "../components/CommodityTable";

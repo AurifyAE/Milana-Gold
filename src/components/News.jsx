@@ -6,7 +6,7 @@ const NewsTicker = ({ newsItems = [] }) => {
   const items =
     newsItems.length > 0
       ? newsItems
-      : [{ description: "Welcome to Zelora Gold Updates" }];
+      : [{ description: "Welcome to Milana Gold Updates" }];
 
   return (
     <Box
@@ -43,7 +43,7 @@ const NewsTicker = ({ newsItems = [] }) => {
       >
         <Typography
           sx={{
-            color: "#FFEDA5", // Zelora Gold
+            color: "#FFEDA5", // Milana Gold
             fontSize: {
               xs: "12px",
               md: "1.1vw",
@@ -53,7 +53,7 @@ const NewsTicker = ({ newsItems = [] }) => {
             whiteSpace: "nowrap",
           }}
         >
-          Zelora Gold Updates
+          Milana Gold Updates
         </Typography>
         <Typography
           sx={{
