@@ -42,12 +42,12 @@ const RateBox = ({ label, value, dir, isSilver }) => {
       <Typography
         className="font-numbers"
         sx={{
-          fontSize: "2.3cqi",
+          fontSize: "2cqi",
           fontWeight: 800,
           color: isSilver ? "#BAC8D9" : "#FFEDA5",
           letterSpacing: "0.1em",
           textTransform: "uppercase",
-          mb: "0.8cqi",
+          mb: "0.5cqi",
         }}
       >
         {label}
@@ -63,9 +63,9 @@ const RateBox = ({ label, value, dir, isSilver }) => {
           background:
             "linear-gradient(180deg, rgba(46, 12, 24, 0.75) 0%, rgba(20, 5, 12, 0.88) 100%)",
           border: `1px solid ${borderColor}`,
-          borderRadius: "1.2cqi",
-          py: "1.8cqi",
-          px: "1cqi",
+          borderRadius: "1cqi",
+          py: "1.2cqi",
+          px: "0.8cqi",
           boxShadow: shadow,
           transition: "border 0.35s ease, box-shadow 0.35s ease",
           boxSizing: "border-box",
@@ -74,7 +74,7 @@ const RateBox = ({ label, value, dir, isSilver }) => {
         <Typography
           className="font-numbers"
           sx={{
-            fontSize: "4.8cqi",
+            fontSize: "4.2cqi",
             fontWeight: 800,
             letterSpacing: "-0.01em",
             color: "#FFFFFF",
@@ -106,7 +106,7 @@ const MetalCard = ({
       sx={{
         position: "relative",
         overflow: "hidden",
-        borderRadius: "1.8cqi",
+        borderRadius: "1.6cqi",
         background: isSilver
           ? "linear-gradient(180deg, rgba(38, 12, 22, 0.88) 0%, rgba(18, 5, 12, 0.95) 100%)"
           : "linear-gradient(180deg, rgba(48, 12, 25, 0.88) 0%, rgba(22, 5, 14, 0.95) 100%)",
@@ -115,8 +115,8 @@ const MetalCard = ({
           ? "1px solid rgba(186, 200, 217, 0.3)"
           : "1px solid rgba(229, 197, 131, 0.35)",
         boxShadow:
-          "0 1.2cqi 3cqi rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 237, 165, 0.2)",
-        p: "2.4cqi",
+          "0 1cqi 2.5cqi rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 237, 165, 0.2)",
+        p: "1.6cqi",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -142,20 +142,20 @@ const MetalCard = ({
           alignItems: "center",
           justifyContent: "space-between",
           width: "100%",
-          pb: "1.4cqi",
+          pb: "0.9cqi",
           borderBottom: "1px solid rgba(229, 197, 131, 0.16)",
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: "1.4cqi" }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: "1.2cqi" }}>
           <Box
             component="img"
             src={imageSrc}
             alt={title}
             sx={{
-              width: "7cqi",
-              height: "7cqi",
+              width: "5.5cqi",
+              height: "5.5cqi",
               objectFit: "contain",
-              filter: "drop-shadow(0 0.5cqi 1cqi rgba(0,0,0,0.6))",
+              filter: "drop-shadow(0 0.4cqi 0.8cqi rgba(0,0,0,0.6))",
               animation: "float 4s ease-in-out infinite",
             }}
           />
@@ -163,7 +163,7 @@ const MetalCard = ({
             <Typography
               className="font-cinzel"
               sx={{
-                fontSize: "4.2cqi",
+                fontSize: "3.2cqi",
                 fontWeight: 800,
                 letterSpacing: "0.08em",
                 color: isSilver ? "#BAC8D9" : "#FFEDA5",
@@ -176,12 +176,12 @@ const MetalCard = ({
             <Typography
               className="font-numbers"
               sx={{
-                fontSize: "2cqi",
+                fontSize: "1.6cqi",
                 fontWeight: 600,
                 letterSpacing: "0.08em",
                 color: "rgba(255, 255, 255, 0.6)",
                 lineHeight: 1.2,
-                mt: "0.4cqi",
+                mt: "0.2cqi",
               }}
             >
               {subTitle}
@@ -193,18 +193,18 @@ const MetalCard = ({
           sx={{
             display: "flex",
             alignItems: "center",
-            gap: "0.6cqi",
+            gap: "0.5cqi",
             bgcolor: "rgba(0, 0, 0, 0.4)",
             border: "1px solid rgba(229, 197, 131, 0.2)",
             borderRadius: "0.8cqi",
-            px: "1.2cqi",
-            py: "0.4cqi",
+            px: "1cqi",
+            py: "0.3cqi",
           }}
         >
           <Box
             sx={{
-              width: "0.9cqi",
-              height: "0.9cqi",
+              width: "0.8cqi",
+              height: "0.8cqi",
               borderRadius: "50%",
               bgcolor: "#3DDC84",
               boxShadow: "0 0 0.6cqi #3DDC84",
@@ -213,7 +213,7 @@ const MetalCard = ({
           <Typography
             className="font-numbers"
             sx={{
-              fontSize: "1.8cqi",
+              fontSize: "1.6cqi",
               fontWeight: 700,
               color: "#3DDC84",
               letterSpacing: "0.05em",
@@ -229,10 +229,9 @@ const MetalCard = ({
         sx={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
-          gap: "1.8cqi",
+          gap: "1.4cqi",
           width: "100%",
-          my: "auto",
-          pt: "1.2cqi",
+          pt: "0.9cqi",
         }}
       >
         <RateBox
@@ -252,7 +251,7 @@ const MetalCard = ({
   );
 };
 
-const PortraitSpotRates = () => {
+const PortraitSpotRates = ({ children }) => {
   const { goldData, silverData } = useSpotRate();
 
   // Price direction tracking for pulse animation
@@ -350,17 +349,17 @@ const PortraitSpotRates = () => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        gap: "2cqi",
+        gap: "1.6cqi",
       }}
     >
-      {/* ROW 2: GOLD & SILVER SPOT PANELS */}
+      {/* 1. TOP: GOLD & SILVER SPOT (BID & ASK) */}
       <Box
         sx={{
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
-          gap: "1.8cqi",
+          gap: "1.6cqi",
           width: "100%",
-          flex: 1,
+          flex: "0 0 auto",
         }}
       >
         <MetalCard
@@ -386,28 +385,43 @@ const PortraitSpotRates = () => {
         />
       </Box>
 
-      {/* BOTTOM OUNCE TICKER / STATUS BAR */}
+      {/* 2. MIDDLE: KARAT CARDS (Rendered between Spot Rates and Bottom Bar) */}
+      {children && (
+        <Box
+          sx={{
+            flex: "1 1 auto",
+            minHeight: 0,
+            width: "100%",
+            display: "flex",
+          }}
+        >
+          {children}
+        </Box>
+      )}
+
+      {/* 3. BOTTOM: OUNCE TICKER / STATUS BAR */}
       <Box
         sx={{
-          borderRadius: "1.4cqi",
+          flex: "0 0 auto",
+          borderRadius: "1.2cqi",
           background:
             "linear-gradient(90deg, rgba(38, 10, 20, 0.94) 0%, rgba(55, 14, 28, 0.96) 50%, rgba(38, 10, 20, 0.94) 100%)",
           backdropFilter: "blur(16px)",
           border: "1px solid rgba(229, 197, 131, 0.28)",
           boxShadow: "0 0.8cqi 2cqi rgba(0, 0, 0, 0.55)",
-          py: "1.4cqi",
-          px: "2.4cqi",
+          py: "1.1cqi",
+          px: "2cqi",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
         }}
       >
         {/* Left: Au Gold PRICE PER OUNCE */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: "1.4cqi" }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: "1.2cqi" }}>
           <Box
             sx={{
-              width: "4.8cqi",
-              height: "4.8cqi",
+              width: "4.2cqi",
+              height: "4.2cqi",
               borderRadius: "0.8cqi",
               background:
                 "linear-gradient(135deg, #FFEDA5 0%, #D4AF37 100%)",
@@ -416,7 +430,7 @@ const PortraitSpotRates = () => {
               justifyContent: "center",
               color: "#1c040f",
               fontWeight: 900,
-              fontSize: "2.4cqi",
+              fontSize: "2.1cqi",
               boxShadow: "0 2px 8px rgba(0,0,0,0.5)",
             }}
           >
@@ -427,7 +441,7 @@ const PortraitSpotRates = () => {
             <Typography
               className="font-cinzel"
               sx={{
-                fontSize: "2.5cqi",
+                fontSize: "2.2cqi",
                 fontWeight: 800,
                 color: "#FFEDA5",
                 lineHeight: 1.15,
@@ -439,7 +453,7 @@ const PortraitSpotRates = () => {
             <Typography
               className="font-numbers"
               sx={{
-                fontSize: "2cqi",
+                fontSize: "1.8cqi",
                 fontWeight: 600,
                 color: "rgba(255, 255, 255, 0.75)",
                 lineHeight: 1.2,
@@ -455,22 +469,22 @@ const PortraitSpotRates = () => {
         </Box>
 
         {/* Right: Live Market Indicator + Riyadh Time */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: "1.8cqi" }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: "0.8cqi" }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: "1.6cqi" }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: "0.6cqi" }}>
             <Box
               sx={{
-                width: "1.2cqi",
-                height: "1.2cqi",
+                width: "1cqi",
+                height: "1cqi",
                 borderRadius: "50%",
                 bgcolor: "#3DDC84",
-                boxShadow: "0 0 1cqi #3DDC84",
+                boxShadow: "0 0 0.8cqi #3DDC84",
                 animation: "pulse 1.5s infinite",
               }}
             />
             <Typography
               className="font-numbers"
               sx={{
-                fontSize: "2.2cqi",
+                fontSize: "1.9cqi",
                 fontWeight: 800,
                 color: "#3DDC84",
                 letterSpacing: "0.06em",
@@ -483,7 +497,7 @@ const PortraitSpotRates = () => {
           <Typography
             className="font-numbers"
             sx={{
-              fontSize: "2.4cqi",
+              fontSize: "2.1cqi",
               fontWeight: 700,
               color: "rgba(255, 237, 165, 0.95)",
               letterSpacing: "0.04em",

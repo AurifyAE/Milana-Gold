@@ -215,12 +215,12 @@ function TvScreen() {
           boxSizing: "border-box",
         }}
       >
-        {/* TOP 1/4 PORTION: LOGO WITH ORNAMENTAL ACCENT (~23% height) */}
+        {/* TOP 1/4 PORTION: LOGO WITH ORNAMENTAL ACCENT (~21% height) */}
         <Box
           sx={{
-            height: "23%",
-            minHeight: "23%",
-            maxHeight: "23%",
+            height: "21%",
+            minHeight: "21%",
+            maxHeight: "21%",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -300,29 +300,22 @@ function TvScreen() {
           </Box>
         </Box>
 
-        {/* BOTTOM 3/4 PORTION: LIVE RATES (Karat Cards + Spot Panels + Ounce Bar) (~77% height) */}
+        {/* BOTTOM PORTION: LIVE RATES (Spot BID/ASK at Top + Karat Cards in Middle + Ounce Bar at Bottom) */}
         <Box
           sx={{
-            height: "77%",
-            maxHeight: "77%",
+            height: "78%",
+            maxHeight: "78%",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
-            gap: "2.4cqi",
-            pt: "1.4cqi",
-            pb: "0.4cqi",
             width: "100%",
+            pt: "1cqi",
+            pb: "0.2cqi",
+            boxSizing: "border-box",
           }}
         >
-          {/* ROW 1: KARAT CARDS (Gold 24K, Gold 22K, Gold 21K, Gold 18K) */}
-          <Box sx={{ flex: "1.18 1 0", display: "flex", width: "100%" }}>
+          <PortraitSpotRates>
             <KaratCards commodities={commodities} />
-          </Box>
-
-          {/* ROW 2: SPOT RATES (Gold & Silver Spot BID/ASK, Price Per Ounce Bar) */}
-          <Box sx={{ flex: "1 1 0", display: "flex", width: "100%" }}>
-            <PortraitSpotRates />
-          </Box>
+          </PortraitSpotRates>
         </Box>
       </Box>
     </Box>
