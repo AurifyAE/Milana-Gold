@@ -1,64 +1,67 @@
 body {
   background-color: #140b10;
-  background-size: cover;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
   height: 100vh;
-  padding: "50px 50px";
+  width: 100vw;
 }
 
 #root {
   margin: 0 auto;
   text-align: center;
+  height: 100%;
+  width: 100%;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
   }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  50% {
+    transform: translateY(-5px);
   }
 }
- 
-.card {
-  padding: 2em;
-}
 
-.read-the-docs {
-  color: #888;
-}
-
-/* DeviceRestriction.css */
-
-/* Hide the content for mobile and tablet devices */
-.restriction-message {
-  display: none;
-  text-align: center;
-  margin: auto;
-  padding: 20px;
-  font-size: 18px;
-  color: #ff0000;
-  /* Red color for visibility */
-  background-color: #ffffff;
-  /* White background */
-  border: 2px solid #ff0000;
-  /* Red border */
-}
-
-/* Display the restriction message on mobile and tablet devices */
-@media (max-width: 1024px) {
-  .content {
-    display: none;
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
   }
+  50% {
+    opacity: 0.5;
+  }
+}
 
-  .restriction-message {
-    display: block;
+@keyframes pulseRise {
+  0% {
+    box-shadow: 0 0 0 0 rgba(61, 220, 132, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(61, 220, 132, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(61, 220, 132, 0);
+  }
+}
+
+@keyframes pulseFall {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 77, 77, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 77, 77, 0);
+  }
+}
+
+@keyframes goldAura {
+  0%, 100% {
+    filter: drop-shadow(0 0 15px rgba(229, 197, 131, 0.35));
+  }
+  50% {
+    filter: drop-shadow(0 0 28px rgba(255, 237, 165, 0.6));
   }
 }
 

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useConnectionState } from "use-connection-state";
 import { SpotRateProvider } from "./context/SpotRateContext";
 import { MarketDataProvider } from "./context/MarketDataContext";
 import "./App.css";

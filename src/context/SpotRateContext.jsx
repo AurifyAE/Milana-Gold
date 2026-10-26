@@ -1,5 +1,5 @@
 // SpotRateContext.js
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useCallback } from "react";
 
 const SpotRateContext = createContext();
 
@@ -22,45 +22,75 @@ export const SpotRateProvider = ({ children }) => {
     };
   };
 
-  const updateMarketData = (
+  const updateMarketData = useCallback((
     marketData,
-    goldBidSpread,
-    goldAskSpread,
-    silverBidSpread,
-    silverAskSpread,
+    goldBidSpread = 0,
+    goldAskSpread = 0,
+    silverBidSpread = 0,
+    silverAskSpread = 0,
   ) => {
-    if (!marketData || !marketData.Gold || !marketData.Silver) {
+    if (!marketData || typeof marketData !== "object") {
       return;
     }
 
-    const goldValues = calculateValues(
-      marketData.Gold?.bid,
-      goldBidSpread,
-      goldAskSpread,
-      0.5,
-    );
+    // Flexible case-insensitive retrieval
+    const goldItem =
+      marketData.Gold ||
+      marketData.GOLD ||
+      marketData.gold ||
+      Object.values(marketData).find(
+        (m) =>
+          m?.symbol?.toLowerCase() === "gold" ||
+          m?.epic?.toLowerCase() === "gold",
+      );
 
-    setGoldData({
-      bid: goldValues?.bid,
-      ask: goldValues?.ask,
-      low: marketData.Gold?.low,
-      high: marketData.Gold?.high,
-    });
+    const silverItem =
+      marketData.Silver ||
+      marketData.SILVER ||
+      marketData.silver ||
+      Object.values(marketData).find(
+        (m) =>
+          m?.symbol?.toLowerCase() === "silver" ||
+          m?.epic?.toLowerCase() === "silver",
+      );
 
-    const silverValues = calculateValues(
-      marketData.Silver?.bid,
-      silverBidSpread,
-      silverAskSpread,
-      0.05,
-      3,
-    );
-    setSilverData({
-      bid: silverValues?.bid,
-      ask: silverValues?.ask,
-      low: marketData.Silver?.low,
-      high: marketData.Silver?.high,
-    });
-  };
+    if (goldItem && (goldItem.bid || goldItem.offer)) {
+      const rawBid = goldItem.bid || goldItem.offer;
+      const goldValues = calculateValues(
+        rawBid,
+        goldBidSpread,
+        goldAskSpread,
+        0.5,
+      );
+
+      setGoldData({
+        bid: goldValues?.bid,
+        ask: goldValues?.ask,
+        low: goldItem.low,
+        high: goldItem.high,
+        initialBid: goldItem.initialBid || goldItem.low,
+      });
+    }
+
+    if (silverItem && (silverItem.bid || silverItem.offer)) {
+      const rawBid = silverItem.bid || silverItem.offer;
+      const silverValues = calculateValues(
+        rawBid,
+        silverBidSpread,
+        silverAskSpread,
+        0.05,
+        3,
+      );
+
+      setSilverData({
+        bid: silverValues?.bid,
+        ask: silverValues?.ask,
+        low: silverItem.low,
+        high: silverItem.high,
+        initialBid: silverItem.initialBid || silverItem.low,
+      });
+    }
+  }, []);
 
   return (
     <SpotRateContext.Provider

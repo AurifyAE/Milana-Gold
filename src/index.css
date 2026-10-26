@@ -2,7 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Premium global font override */
-body, button, input, select, textarea, .MuiTypography-root {
+/* Premium global font styling */
+body, button, input, select, textarea {
+  font-family: 'Outfit', sans-serif;
+}
+
+.font-cinzel {
+  font-family: 'Cinzel', serif !important;
+}
+
+.font-gilda {
   font-family: 'Gilda Display', serif !important;
+}
+
+.font-numbers {
+  font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-feature-settings: 'tnum' on, 'lnum' on;
 }

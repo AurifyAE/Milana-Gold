@@ -1,47 +1,31 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { Grid, Paper, Typography, Box, useMediaQuery } from "@mui/material";
-import SpotRate from "../components/SpotRate";
-import NewsTicker from "../components/News";
-
+import { useEffect, useState } from "react";
+import { Box, Typography } from "@mui/material";
 import {
   fetchSpotRates,
   fetchServerURL,
-  fetchNews,
   fetchTVScreenData,
 } from "../api/api";
 import io from "socket.io-client";
 import { useSpotRate } from "../context/SpotRateContext";
 import mainLogo from "/images/logo.png";
-import SystemClock from "../components/SystemClock";
-import WorldClockHorizontal from "../components/WorldClock";
-import CommodityTable from "../components/CommodityTable";
-import BuyerSeller from "../components/BuyerSeller";
+import KaratCards from "../components/KaratCards";
+import PortraitSpotRates from "../components/PortraitSpotRates";
 
 function TvScreen() {
-  const [showLimitModal, setShowLimitModal] = useState(false);
-  const [dateTime, setDateTime] = useState(new Date());
-  const [serverURL, setServerURL] = useState("");
-  const [news, setNews] = useState([]);
+  const [serverURL, setServerURL] = useState(
+    "https://capital-server-gnsu.onrender.com",
+  );
   const [marketData, setMarketData] = useState({});
   const [commodities, setCommodities] = useState([]);
-  const [goldBidSpread, setGoldBidSpread] = useState("");
-  const [goldAskSpread, setGoldAskSpread] = useState("");
-  const [silverBidSpread, setSilverBidSpread] = useState("");
-  const [silverAskSpread, setSilverAskSpread] = useState("");
-  const [symbols, setSymbols] = useState(["GOLD", "SILVER"]);
-  const [error, setError] = useState(null);
+  const [goldBidSpread, setGoldBidSpread] = useState(0);
+  const [goldAskSpread, setGoldAskSpread] = useState(0);
+  const [silverBidSpread, setSilverBidSpread] = useState(0);
+  const [silverAskSpread, setSilverAskSpread] = useState(0);
 
   const { updateMarketData } = useSpotRate();
-
   const adminId = import.meta.env.VITE_APP_ADMIN_ID;
 
-  // updateMarketData(
-  //   marketData,
-  //   goldBidSpread,
-  //   goldAskSpread,
-  //   silverBidSpread,
-  //   silverAskSpread,
-  // );
+  // Sync spot rates with context whenever marketData or spreads update
   useEffect(() => {
     updateMarketData(
       marketData,
@@ -51,6 +35,7 @@ function TvScreen() {
       silverAskSpread,
     );
   }, [
+    updateMarketData,
     marketData,
     goldBidSpread,
     goldAskSpread,
@@ -58,252 +43,288 @@ function TvScreen() {
     silverAskSpread,
   ]);
 
+  // Initial Data Fetch
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [spotRatesRes, serverURLRes, newsRes] = await Promise.all([
+        const [spotRatesRes, serverURLRes] = await Promise.all([
           fetchSpotRates(adminId),
           fetchServerURL(),
-          fetchNews(adminId),
         ]);
 
-        // Handle Spot Rates
-        const {
-          commodities,
-          goldBidSpread,
-          goldAskSpread,
-          silverBidSpread,
-          silverAskSpread,
-        } = spotRatesRes.data.info;
-        setCommodities(commodities);
-        setGoldBidSpread(goldBidSpread);
-        setGoldAskSpread(goldAskSpread);
-        setSilverBidSpread(silverBidSpread);
-        setSilverAskSpread(silverAskSpread);
+        if (spotRatesRes?.data?.info) {
+          const {
+            commodities: comms,
+            goldBidSpread: gBid,
+            goldAskSpread: gAsk,
+            silverBidSpread: sBid,
+            silverAskSpread: sAsk,
+          } = spotRatesRes.data.info;
+          setCommodities(comms || []);
+          setGoldBidSpread(gBid || 0);
+          setGoldAskSpread(gAsk || 0);
+          setSilverBidSpread(sBid || 0);
+          setSilverAskSpread(sAsk || 0);
+        }
 
-        // Handle Server URL
-        const { serverURL } = serverURLRes.data.info;
-        setServerURL(serverURL);
-
-        // Handle News
-        setNews(newsRes.data.news.news);
-      } catch (error) {
-        setError("An error occurred while fetching data");
+        if (serverURLRes?.data?.info?.serverURL) {
+          setServerURL(serverURLRes.data.info.serverURL);
+        }
+      } catch (err) {
+        console.error("Error fetching initial data:", err);
       }
     };
 
     fetchData();
 
-    // Fetch TV screen data (you can leave this as a separate call)
-    fetchTVScreenData(adminId)
-      .then((response) => {
-        if (response.status === 200) {
-          // Allow TV screen view
-          setShowLimitModal(false);
-        }
-      })
-      .catch((error) => {
-        if (error.response && error.response.status === 403) {
-          setShowLimitModal(true); // Show the modal on 403 status
-        } else {
-          console.error("Error:", error.message);
-          alert("An unexpected error occurred.");
-        }
-      });
+    // Verify TV screen permissions
+    fetchTVScreenData(adminId).catch((err) => {
+      console.warn("TV screen status:", err?.message);
+    });
   }, [adminId]);
 
-  // Function to Fetch Market Data Using Socket
+  // Real-time Socket Connection
   useEffect(() => {
-    if (serverURL) {
-      const socket = io(serverURL, {
-        query: { secret: import.meta.env.VITE_APP_SOCKET_SECRET_KEY },
-        transports: ["websocket"],
-        withCredentials: true,
-      });
+    // On localhost, route through Vite proxy to satisfy server origin whitelist
+    const isLocal =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+    const socketUrl = isLocal ? "/" : serverURL;
 
-      socket.on("connect", () => {
-        socket.emit("request-data", symbols);
-      });
+    if (!socketUrl) return;
 
-      socket.on("disconnect", () => {});
+    const socket = io(socketUrl, {
+      query: {
+        secret: import.meta.env.VITE_APP_SOCKET_SECRET_KEY || "aurify@123",
+      },
+      transports: ["websocket", "polling"],
+      withCredentials: true,
+      reconnection: true,
+      reconnectionAttempts: Infinity,
+      reconnectionDelay: 1000,
+    });
 
-      // socket.on("market-data", (data) => {
-      //   if (data && data.symbol) {
-      //     setMarketData((prevData) => ({
-      //       ...prevData,
-      //       [data.symbol]: {
-      //         ...prevData[data.symbol],
-      //         ...data,
-      //       },
-      //     }));
-      //   } else {
-      //     console.warn("Received malformed market data:", data);
-      //   }
-      // });
+    socket.on("connect", () => {
+      console.log("Socket connected to:", socketUrl);
+      socket.emit("request-data", ["GOLD", "SILVER"]);
+    });
 
-      socket.on("market-data", (data) => {
-        if (Array.isArray(data)) {
+    socket.on("market-data", (data) => {
+      if (Array.isArray(data)) {
+        setMarketData((prev) => {
+          const next = { ...prev };
           data.forEach((item) => {
-            if (item.symbol) {
-              setMarketData((prev) => ({
-                ...prev,
-                [item.symbol]: {
-                  ...prev[item.symbol],
-                  ...item,
-                },
-              }));
+            if (item?.symbol) {
+              next[item.symbol] = { ...next[item.symbol], ...item };
             }
           });
-        } else if (data && data.symbol) {
-          setMarketData((prev) => ({
-            ...prev,
-            [data.symbol]: {
-              ...prev[data.symbol],
-              ...data,
-            },
-          }));
-        } else {
-          console.warn("Received malformed market data:", data);
-        }
-      });
+          return next;
+        });
+      } else if (data && (data.symbol || data.epic)) {
+        const sym = data.symbol || data.epic;
+        const normalizedKey =
+          sym.toLowerCase() === "gold"
+            ? "Gold"
+            : sym.toLowerCase() === "silver"
+              ? "Silver"
+              : sym;
 
-      socket.on("error", (error) => {
-        console.error("WebSocket error:", error);
-        setError("An error occurred while receiving data");
-      });
+        setMarketData((prev) => ({
+          ...prev,
+          [normalizedKey]: {
+            ...prev[normalizedKey],
+            ...data,
+          },
+        }));
+      }
+    });
 
-      // Cleanup function to disconnect the socket
-      return () => {
-        socket.disconnect();
-      };
-    }
-  }, [serverURL, symbols]);
+    socket.on("error", (err) => {
+      console.error("WebSocket error:", err);
+    });
 
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkWidth = () => {
-      setIsMobile(window.screen.width <= 100); // 🔥 screen.width ignores zoom
+    return () => {
+      socket.disconnect();
     };
-
-    checkWidth();
-    window.addEventListener("resize", checkWidth);
-    return () => window.removeEventListener("resize", checkWidth);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDateTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
+  }, [serverURL]);
 
   return (
     <Box
       sx={{
-        minHeight: "100dvh",
+        width: "100vw",
+        height: "100dvh",
+        maxHeight: "100dvh",
+        backgroundColor: "#140b10",
         color: "white",
-        pb: { xs: "0", md: "3vw" },
+        overflow: "hidden",
+        position: "relative",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#140b10",
       }}
     >
+      {/* Background Ambience Layer */}
       <Box
         sx={{
           position: "fixed",
-          left: "00%",
-          bottom: "0%",
-          height: "100%", // better than %
-          width: "100%", // better than %
+          inset: 0,
+          width: "100%",
+          height: "100%",
           pointerEvents: "none",
           overflow: "hidden",
+          zIndex: 0,
         }}
       >
         <Box
           component="img"
           src="/images/background.png"
-          alt="background"
+          alt="luxury background"
           sx={{
-            height: "100%",
             width: "100%",
+            height: "100%",
             objectFit: "cover",
-            // transform: "scaleX(-1)",
+            opacity: 0.95,
+          }}
+        />
+        {/* Subtle radial dark overlay for depth */}
+        <Box
+          sx={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "radial-gradient(circle at center 20%, rgba(20, 11, 16, 0.2) 0%, rgba(10, 4, 8, 0.72) 100%)",
           }}
         />
       </Box>
 
-      {/* Grid */}
-
-      <Grid
-        container
-        spacing={10}
-        minHeight="100%"
-        alignItems="center"
-        justifyContent="space-between"
-        flexWrap="wrap"
-        zIndex="1"
-        position="relative"
-        margin="0"
-        padding={{ xs: "20px 2vw 0 2vw", md: "2.5vw 2vw 0 2vw" }}
-        width="100%"
+      {/* Screen Container strictly matching Height 38" : Width 25" Portrait Ratio */}
+      <Box
+        sx={{
+          containerType: "inline-size",
+          position: "relative",
+          zIndex: 1,
+          width: "100%",
+          maxWidth: "calc(100dvh * (25 / 38))",
+          height: "100dvh",
+          maxHeight: "100dvh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          px: "3.4cqi",
+          py: "2.6cqi",
+          boxSizing: "border-box",
+        }}
       >
-        {/* Side: SpotRate & Date Time */}
-        <Grid
-          xs={12}
-          md={6}
-          padding="1vw 4vw 1vw 1vw"
-          gap="1.5vw"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          flexDirection="column"
-        >
-          <Box
-            sx={{
-              height: "auto",
-              width: { xs: "40vw", sm: "25vw" },
-              marginBottom: { xs: "20px", sm: "0vw" },
-            }}
-          >
-            <img src={mainLogo} alt="" className="object-contain w-full" />
-          </Box>
-
-          <CommodityTable items={commodities} />
-        </Grid>
-        <Grid
-          xs={12}
-          md={6}
-          display="flex"
-          height="100%"
-          alignItems="center"
-          flexDirection="column"
-          justifyContent="spaceBetween"
-          padding="1vw"
-          gap="1vw"
-        >
-          <SystemClock />
-
-          <WorldClockHorizontal />
-          <SpotRate />
-        </Grid>
-
-        <Grid
-          md={12}
+        {/* TOP 1/4 PORTION: LOGO WITH ORNAMENTAL ACCENT (~23% height) */}
+        <Box
           sx={{
-            mt: { xs: "20px", md: "0" },
-            position: { xs: "unset", md: "fixed" },
-            zIndex: "1",
-            bottom: "0",
+            height: "23%",
+            minHeight: "23%",
+            maxHeight: "23%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
             width: "100%",
-            left: "0",
           }}
         >
-          <NewsTicker newsItems={news} />
-        </Grid>
-      </Grid>
+          {/* Subtle warm halo behind logo */}
+          <Box
+            sx={{
+              position: "absolute",
+              width: "65%",
+              height: "75%",
+              background:
+                "radial-gradient(ellipse at center, rgba(255, 237, 165, 0.16) 0%, rgba(200, 160, 80, 0.04) 50%, transparent 70%)",
+              filter: "blur(28px)",
+              pointerEvents: "none",
+            }}
+          />
+
+          {/* Centered Milana Gold Logo */}
+          <Box
+            component="img"
+            src={mainLogo}
+            alt="Milana Gold & Diamonds"
+            sx={{
+              maxHeight: "82%",
+              maxWidth: "88%",
+              width: "auto",
+              height: "auto",
+              objectFit: "contain",
+              filter: "drop-shadow(0 0.5cqi 1.8cqi rgba(229, 197, 131, 0.45))",
+              animation: "goldAura 5s ease-in-out infinite",
+              userSelect: "none",
+            }}
+          />
+
+          {/* Ornamental Divider Line */}
+          <Box
+            sx={{
+              position: "absolute",
+              bottom: 0,
+              width: "80%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "1.5cqi",
+            }}
+          >
+            <Box
+              sx={{
+                flex: 1,
+                height: "1px",
+                background:
+                  "linear-gradient(90deg, transparent 0%, rgba(229, 197, 131, 0.4) 100%)",
+              }}
+            />
+            <Typography
+              sx={{
+                color: "#FFEDA5",
+                fontSize: "1.8cqi",
+                lineHeight: 1,
+                opacity: 0.8,
+              }}
+            >
+              ✦
+            </Typography>
+            <Box
+              sx={{
+                flex: 1,
+                height: "1px",
+                background:
+                  "linear-gradient(90deg, rgba(229, 197, 131, 0.4) 0%, transparent 100%)",
+              }}
+            />
+          </Box>
+        </Box>
+
+        {/* BOTTOM 3/4 PORTION: LIVE RATES (Karat Cards + Spot Panels + Ounce Bar) (~77% height) */}
+        <Box
+          sx={{
+            height: "77%",
+            maxHeight: "77%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            gap: "2.4cqi",
+            pt: "1.4cqi",
+            pb: "0.4cqi",
+            width: "100%",
+          }}
+        >
+          {/* ROW 1: KARAT CARDS (Gold 24K, Gold 22K, Gold 21K, Gold 18K) */}
+          <Box sx={{ flex: "1.18 1 0", display: "flex", width: "100%" }}>
+            <KaratCards commodities={commodities} />
+          </Box>
+
+          {/* ROW 2: SPOT RATES (Gold & Silver Spot BID/ASK, Price Per Ounce Bar) */}
+          <Box sx={{ flex: "1 1 0", display: "flex", width: "100%" }}>
+            <PortraitSpotRates />
+          </Box>
+        </Box>
+      </Box>
     </Box>
   );
 }
