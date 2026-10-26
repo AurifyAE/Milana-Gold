@@ -118,7 +118,7 @@ const MetalCard = ({
           : "1px solid rgba(229, 197, 131, 0.35)",
         boxShadow:
           "0 1cqi 2.5cqi rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 237, 165, 0.2)",
-        p: "1.6cqi",
+        p: "3cqi",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -142,7 +142,7 @@ const MetalCard = ({
         sx={{
           display: "flex",
           alignItems: "center",
-            justifyContent: "center",
+          justifyContent: "center",
           width: "100%",
           pb: "0.9cqi",
           borderBottom: "1px solid rgba(229, 197, 131, 0.16)",
@@ -152,7 +152,7 @@ const MetalCard = ({
           sx={{
             display: "flex",
             alignItems: "center",
-            flexDirection:'column',
+            flexDirection: "column",
             gap: "1.2cqi",
           }}
         >
