@@ -303,8 +303,8 @@ function TvScreen() {
         {/* BOTTOM PORTION: LIVE RATES (Spot BID/ASK at Top + Karat Cards in Middle + Ounce Bar at Bottom) */}
         <Box
           sx={{
-            height: "78%",
-            maxHeight: "78%",
+            height: "75%",
+            maxHeight: "75%",
             display: "flex",
             flexDirection: "column",
             width: "100%",

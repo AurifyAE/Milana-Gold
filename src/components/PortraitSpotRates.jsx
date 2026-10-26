@@ -21,10 +21,12 @@ const RateBox = ({ label, value, dir, isSilver }) => {
   if (isPulse) {
     if (dir === "rise") {
       borderColor = "rgba(61, 220, 132, 0.85)";
-      shadow = "0 0 1.8cqi rgba(61, 220, 132, 0.35), inset 0 2px 8px rgba(0, 0, 0, 0.5)";
+      shadow =
+        "0 0 1.8cqi rgba(61, 220, 132, 0.35), inset 0 2px 8px rgba(0, 0, 0, 0.5)";
     } else if (dir === "fall") {
       borderColor = "rgba(255, 77, 77, 0.85)";
-      shadow = "0 0 1.8cqi rgba(255, 77, 77, 0.35), inset 0 2px 8px rgba(0, 0, 0, 0.5)";
+      shadow =
+        "0 0 1.8cqi rgba(255, 77, 77, 0.35), inset 0 2px 8px rgba(0, 0, 0, 0.5)";
     }
   }
 
@@ -140,13 +142,20 @@ const MetalCard = ({
         sx={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
+            justifyContent: "center",
           width: "100%",
           pb: "0.9cqi",
           borderBottom: "1px solid rgba(229, 197, 131, 0.16)",
         }}
       >
-        <Box sx={{ display: "flex", alignItems: "center", gap: "1.2cqi" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection:'column',
+            gap: "1.2cqi",
+          }}
+        >
           <Box
             component="img"
             src={imageSrc}
@@ -188,64 +197,20 @@ const MetalCard = ({
             </Typography>
           </Box>
         </Box>
-
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5cqi",
-            bgcolor: "rgba(0, 0, 0, 0.4)",
-            border: "1px solid rgba(229, 197, 131, 0.2)",
-            borderRadius: "0.8cqi",
-            px: "1cqi",
-            py: "0.3cqi",
-          }}
-        >
-          <Box
-            sx={{
-              width: "0.8cqi",
-              height: "0.8cqi",
-              borderRadius: "50%",
-              bgcolor: "#3DDC84",
-              boxShadow: "0 0 0.6cqi #3DDC84",
-            }}
-          />
-          <Typography
-            className="font-numbers"
-            sx={{
-              fontSize: "1.6cqi",
-              fontWeight: 700,
-              color: "#3DDC84",
-              letterSpacing: "0.05em",
-            }}
-          >
-            LIVE
-          </Typography>
-        </Box>
       </Box>
 
       {/* Middle BID & ASK Grid: Prominent side-by-side rates */}
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: "1fr 1fr",
+          gridTemplateColumns: "1fr",
           gap: "1.4cqi",
           width: "100%",
           pt: "0.9cqi",
         }}
       >
-        <RateBox
-          label="BID"
-          value={bidVal}
-          dir={bidDir}
-          isSilver={isSilver}
-        />
-        <RateBox
-          label="ASK"
-          value={askVal}
-          dir={askDir}
-          isSilver={isSilver}
-        />
+        <RateBox label="BID" value={bidVal} dir={bidDir} isSilver={isSilver} />
+        <RateBox label="ASK" value={askVal} dir={askDir} isSilver={isSilver} />
       </Box>
     </Box>
   );
@@ -409,6 +374,7 @@ const PortraitSpotRates = ({ children }) => {
           backdropFilter: "blur(16px)",
           border: "1px solid rgba(229, 197, 131, 0.28)",
           boxShadow: "0 0.8cqi 2cqi rgba(0, 0, 0, 0.55)",
+          mt: "11cqi",
           py: "1.1cqi",
           px: "2cqi",
           display: "flex",
@@ -423,8 +389,7 @@ const PortraitSpotRates = ({ children }) => {
               width: "4.2cqi",
               height: "4.2cqi",
               borderRadius: "0.8cqi",
-              background:
-                "linear-gradient(135deg, #FFEDA5 0%, #D4AF37 100%)",
+              background: "linear-gradient(135deg, #FFEDA5 0%, #D4AF37 100%)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",

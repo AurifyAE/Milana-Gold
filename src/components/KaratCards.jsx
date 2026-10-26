@@ -6,10 +6,34 @@ const OUNCE = 31.103;
 const SAR = 3.75;
 
 const KARAT_CONFIG = [
-  { key: "24k", label: "24K", purityLabel: "999.9", purity: 0.999, purityInt: 999 },
-  { key: "22k", label: "22K", purityLabel: "916", purity: 22 / 24, purityInt: 916 },
-  { key: "21k", label: "21K", purityLabel: "875", purity: 21 / 24, purityInt: 875 },
-  { key: "18k", label: "18K", purityLabel: "750", purity: 18 / 24, purityInt: 750 },
+  {
+    key: "24k",
+    label: "24K",
+    purityLabel: "999.9",
+    purity: 0.999,
+    purityInt: 999,
+  },
+  {
+    key: "22k",
+    label: "22K",
+    purityLabel: "916",
+    purity: 22 / 24,
+    purityInt: 916,
+  },
+  {
+    key: "21k",
+    label: "21K",
+    purityLabel: "875",
+    purity: 21 / 24,
+    purityInt: 875,
+  },
+  {
+    key: "18k",
+    label: "18K",
+    purityLabel: "750",
+    purity: 18 / 24,
+    purityInt: 750,
+  },
 ];
 
 const formatPrice = (val, decimals = 2) => {
@@ -137,6 +161,7 @@ const KaratCards = ({ commodities = [] }) => {
               position: "relative",
               overflow: "hidden",
               borderRadius: "1.4cqi",
+
               background:
                 "linear-gradient(180deg, rgba(48, 12, 25, 0.88) 0%, rgba(26, 6, 15, 0.94) 50%, rgba(14, 3, 9, 0.98) 100%)",
               backdropFilter: "blur(20px)",
@@ -147,8 +172,8 @@ const KaratCards = ({ commodities = [] }) => {
               flexDirection: "column",
               justifyContent: "space-between",
               alignItems: "center",
-              py: "1.2cqi",
-              px: "1.4cqi",
+              py: "2cqi",
+              px: "2cqi",
               height: "100%",
               boxSizing: "border-box",
               // Elegant top golden specular highlight
@@ -170,25 +195,10 @@ const KaratCards = ({ commodities = [] }) => {
                 width: "100%",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
-                px: "0.2cqi",
+                flexDirection: "column",
+                gap: "2cqi",
               }}
             >
-              <Typography
-                className="font-cinzel"
-                sx={{
-                  fontSize: "2.6cqi",
-                  fontWeight: 800,
-                  color: "#FFEDA5", // Champagne Gold
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                  lineHeight: 1,
-                  textShadow: "0 2px 8px rgba(0, 0, 0, 0.8)",
-                }}
-              >
-                GOLD {item.label}
-              </Typography>
-
               <Box
                 sx={{
                   bgcolor: "rgba(255, 237, 165, 0.08)",
@@ -210,6 +220,20 @@ const KaratCards = ({ commodities = [] }) => {
                   {item.purityLabel}
                 </Typography>
               </Box>
+              <Typography
+                className="font-cinzel"
+                sx={{
+                  fontSize: "2.6cqi",
+                  fontWeight: 800,
+                  color: "#FFEDA5", // Champagne Gold
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  lineHeight: 1,
+                  textShadow: "0 2px 8px rgba(0, 0, 0, 0.8)",
+                }}
+              >
+                GOLD {item.label}
+              </Typography>
             </Box>
 
             {/* Center Section: Main Ask Price + Currency Indicator */}
@@ -297,7 +321,8 @@ const KaratCards = ({ commodities = [] }) => {
                 width: "95%",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "space-between",
+                justifyContent:"center",
+                gap:'1cqi',
                 bgcolor: "rgba(0, 0, 0, 0.45)",
                 border: "1px solid rgba(229, 197, 131, 0.22)",
                 borderRadius: "0.8cqi",
@@ -339,4 +364,3 @@ const KaratCards = ({ commodities = [] }) => {
 };
 
 export default KaratCards;
-
