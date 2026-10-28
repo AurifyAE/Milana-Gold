@@ -172,7 +172,7 @@ const KaratCards = ({ commodities = [] }) => {
               flexDirection: "column",
               justifyContent: "space-between",
               alignItems: "center",
-              py: "2cqi",
+              py: "2.2cqi",
               px: "2cqi",
               height: "100%",
               boxSizing: "border-box",
@@ -196,7 +196,7 @@ const KaratCards = ({ commodities = [] }) => {
                 display: "flex",
                 alignItems: "center",
                 flexDirection: "column",
-                gap: "2cqi",
+                gap: "0.8cqi",
               }}
             >
               <Box
@@ -254,7 +254,7 @@ const KaratCards = ({ commodities = [] }) => {
                   <Typography
                     className="font-numbers"
                     sx={{
-                      fontSize: "3.8cqi",
+                      fontSize: "4.2cqi",
                       fontWeight: 800,
                       color: "#FFFFFF",
                       letterSpacing: "-0.01em",

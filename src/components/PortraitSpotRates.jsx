@@ -118,7 +118,7 @@ const MetalCard = ({
           : "1px solid rgba(229, 197, 131, 0.35)",
         boxShadow:
           "0 1cqi 2.5cqi rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 237, 165, 0.2)",
-        p: "3cqi",
+        p: "2.4cqi",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
@@ -374,8 +374,7 @@ const PortraitSpotRates = ({ children }) => {
           backdropFilter: "blur(16px)",
           border: "1px solid rgba(229, 197, 131, 0.28)",
           boxShadow: "0 0.8cqi 2cqi rgba(0, 0, 0, 0.55)",
-          mt: "11cqi",
-          py: "1.1cqi",
+          py: "1.2cqi",
           px: "2cqi",
           display: "flex",
           alignItems: "center",

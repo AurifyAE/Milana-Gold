@@ -197,21 +197,22 @@ function TvScreen() {
         />
       </Box>
 
-      {/* Screen Container strictly matching Height 38" : Width 25" Portrait Ratio */}
+      {/* Screen Container strictly matching 1080x1920 (9:16) Portrait TV Resolution */}
       <Box
         sx={{
           containerType: "inline-size",
           position: "relative",
           zIndex: 1,
           width: "100%",
-          maxWidth: "calc(100dvh * (25 / 38))",
+          maxWidth: "calc(100dvh * (1080 / 1920))",
+          aspectRatio: "1080 / 1920",
           height: "100dvh",
           maxHeight: "100dvh",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          px: "3.4cqi",
-          py: "2.6cqi",
+          px: "3.2cqi",
+          py: "2.4cqi",
           boxSizing: "border-box",
         }}
       >
