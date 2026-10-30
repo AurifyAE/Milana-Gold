@@ -152,8 +152,9 @@ function TvScreen() {
     <Box
       sx={{
         width: "100vw",
-        height: "100dvh",
-        maxHeight: "100dvh",
+        height: "100vh",
+        minHeight: "100vh",
+        maxHeight: "100vh",
         backgroundColor: "#140b10",
         color: "white",
         overflow: "hidden",
@@ -197,23 +198,27 @@ function TvScreen() {
         />
       </Box>
 
-      {/* Screen Container strictly matching 1080x1920 (9:16) Portrait TV Resolution */}
+      {/* Screen Container: Full height & width on portrait screens, 9:16 aspect ratio when previewed on landscape */}
       <Box
         sx={{
           containerType: "inline-size",
           position: "relative",
           zIndex: 1,
           width: "100%",
-          maxWidth: "calc(100dvh * (1080 / 1920))",
-          aspectRatio: "1080 / 1920",
-          height: "100dvh",
-          maxHeight: "100dvh",
+          maxWidth: "100%",
+          height: "100vh",
+          minHeight: "100vh",
+          maxHeight: "100vh",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
           px: "3.2cqi",
           py: "2.4cqi",
           boxSizing: "border-box",
+          "@media (orientation: landscape)": {
+            maxWidth: "calc(100vh * (1080 / 1920))",
+            aspectRatio: "1080 / 1920",
+          },
         }}
       >
         {/* TOP 1/4 PORTION: LOGO WITH ORNAMENTAL ACCENT (~21% height) */}
